@@ -1,5 +1,15 @@
-# SmartPrep
+# Smart Prep - Web Assessment Test Platform (April 2024)
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Made%20with-React-blue?style=for-the-badge&logo=react" alt="Made with React">
+  <img src="https://img.shields.io/badge/Redux-%23764ABC.svg?style=for-the-badge&logo=redux&logoColor=white" alt="Redux">
+  <img src="https://img.shields.io/badge/Tailwind CSS-%231a202c.svg?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
+  <img src="https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
+  <img src="https://img.shields.io/badge/Express.js-%23404d59.svg?style=for-the-badge" alt="Express.js">
+  <img src="https://img.shields.io/badge/Node.js-%234ea94b.svg?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js">
+  <img src="https://img.shields.io/badge/Flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white" alt="Flask">
+  <img src="https://img.shields.io/badge/Python-%2314354C.svg?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+</p>
 This project consists of a React frontend, an Express backend, and a Flask backend.
 
 ## Overview
