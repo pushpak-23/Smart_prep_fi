@@ -1,7 +1,7 @@
 # Smart Prep - Web Assessment Test Platform (April 2024)
-
+## Overview
+-`Made with`
 <p align="center">
-  `Made with`
   <img src="https://img.shields.io/badge/Made%20with-React-blue?style=for-the-badge&logo=react" alt="React">
   <img src="https://img.shields.io/badge/Redux-%23764ABC.svg?style=for-the-badge&logo=redux&logoColor=white" alt="Redux">
   <img src="https://img.shields.io/badge/Tailwind CSS-%231a202c.svg?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
