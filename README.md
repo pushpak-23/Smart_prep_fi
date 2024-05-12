@@ -1,12 +1,12 @@
-# Project Name
+# SmartPrep
 
 This project consists of a React frontend, an Express backend, and a Flask backend.
 
 ## Overview
 
 - `frontend/`: Contains the React frontend.
-- `express-backend/`: Contains the Express backend.
-- `flask-backend/`: Contains the Flask backend.
+- `backend/`: Contains the Express backend.
+- `flask/`: Contains the Flask backend.
 
 ## Installation
 
@@ -24,11 +24,11 @@ This project consists of a React frontend, an Express backend, and a Flask backe
     npm install
 
     # Express Backend
-    cd ../express-backend/
+    cd ../backend/
     npm install
 
     # Flask Backend
-    cd ../flask-backend/
+    cd ../flask/
     pip install -r requirements.txt
     ```
 
@@ -38,20 +38,20 @@ This project consists of a React frontend, an Express backend, and a Flask backe
 
     ```bash
     cd frontend/
-    npm start
+    npm run dev
     ```
 
 2. **Start the Express Backend**:
 
     ```bash
-    cd ../express-backend/
+    cd ../backend/
     npm start
     ```
 
 3. **Start the Flask Backend**:
 
     ```bash
-    cd ../flask-backend/
+    cd ../flask/
     python app.py
     ```
 
@@ -73,14 +73,14 @@ This project consists of a React frontend, an Express backend, and a Flask backe
 - **Linting (Express Backend)**:
 
     ```bash
-    cd ../express-backend/
+    cd ../backend/
     npm run lint
     ```
 
 - **Linting (Flask Backend)**:
 
     ```bash
-    cd ../flask-backend/
+    cd ../flask/
     # Run linting commands for Python (e.g., pylint, flake8)
     ```
 
@@ -94,14 +94,14 @@ This project consists of a React frontend, an Express backend, and a Flask backe
 - **Run Tests (Express Backend)**:
 
     ```bash
-    cd ../express-backend/
+    cd ../backend/
     npm test
     ```
 
 - **Run Tests (Flask Backend)**:
 
     ```bash
-    cd ../flask-backend/
+    cd ../flask/
     # Run test commands for Python (e.g., pytest)
     ```
 
