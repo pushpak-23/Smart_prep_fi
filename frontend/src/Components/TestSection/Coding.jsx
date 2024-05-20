@@ -118,7 +118,7 @@ export default function Coding({
       case "python":
         return "print('Hello world')";
       case "java":
-        return "import java.util.*;\npublic class Main{\npublic static void main(String[] args){\n\n\t}\n}";
+        return "import java.util.*;\npublic class Main{\npublic static void main(String[] args){\n\n\tScanner sc = new Scanner(System.in);\n\t}\n}";
       default:
         return "";
     }

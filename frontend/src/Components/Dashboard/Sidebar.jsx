@@ -1,9 +1,6 @@
 import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
-// import bird from "../assets/bird_2.jpg";
-// import profile from "../assets/sodapdf-converted.jpg";
 import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { useUserContext } from "../../UserContext";
 import Avatar, { genConfig } from "react-nice-avatar";
 import { useSelector } from "react-redux";
 const SidebarContext = createContext();

@@ -1,9 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Question = require("../models/questions.js");
-const compilex = require("compilex");
-const options = { stats: true };
-compilex.init(options);
+const { exec } = require("child_process");
 
 router.post("/add", async (req, res) => {
   try {
@@ -84,110 +82,109 @@ router.get("/aptiNumber", async function (req, res) {
   }
 });
 
-// router.post("/execute", async (req, res) => {
-//   const envData = { OS: "windows" };
-//   const { code, language } = req.body;
-
-//   compilex.compilePython(envData, code, function (data) {
-//     res.send(data.output);
-//   });
-//   compilex.flush(function () {});
-// });
-
-const compileAndExecuteCpp = (code, input, expectedOutput) => {
+const executePython = (code, input, expectedOutput) => {
   return new Promise((resolve) => {
-    const envData = { OS: "windows", cmd: "g++" }; // or use "linux" for Linux environments
+    const fs = require("fs");
+    fs.writeFileSync("script.py", code); // Write the Python code to a temporary file
+
+    const { exec } = require("child_process");
+    // Execute the Python code
     if (input) {
-      compilex.compileCPPWithInput(envData, code, input, (data) => {
-        const actualOutput = data
-          ? typeof data === "string"
-            ? data.trim()
-            : data.output?.trim() || ""
-          : "";
-        resolve({
-          passed: actualOutput === expectedOutput,
-          actualOutput,
-          expectedOutput,
-        });
+      const process = exec("python script.py", (execErr, stdout, stderr) => {
+        if (execErr) {
+          resolve({
+            passed: false,
+            actualOutput: "Execution Error: " + execErr,
+            expectedOutput,
+          });
+        } else {
+          const actualOutput = stdout.trim();
+          resolve({
+            passed: actualOutput === expectedOutput,
+            actualOutput,
+            expectedOutput,
+          });
+        }
       });
+      process.stdin.write(input);
+      process.stdin.end();
     } else {
-      compilex.compileCPP(envData, code, (data) => {
-        const actualOutput = data
-          ? typeof data === "string" && data.trim() !== ""
-            ? data.trim()
-            : "No output"
-          : "No output";
-        resolve({
-          passed: actualOutput === expectedOutput,
-          actualOutput,
-          expectedOutput,
-        });
+      const process = exec("python script.py", (execErr, stdout, stderr) => {
+        if (execErr) {
+          resolve({
+            passed: false,
+            actualOutput: "Execution Error: " + execErr,
+            expectedOutput,
+          });
+        } else {
+          const actualOutput = stdout.trim();
+          resolve({
+            passed: actualOutput === expectedOutput,
+            actualOutput,
+            expectedOutput,
+          });
+        }
       });
     }
   });
 };
 
-const compileAndExecuteJava = (code, input, expectedOutput) => {
+const executeJava = (code, input, expectedOutput) => {
   return new Promise((resolve) => {
-    const envData = { OS: "windows" }; // or add support for Linux environments
-    if (input) {
-      compilex.compileJavaWithInput(envData, code, input, (data) => {
-        const actualOutput = data
-          ? typeof data === "string"
-            ? data.trim()
-            : data.output?.trim() || ""
-          : "";
-        resolve({
-          passed: actualOutput === expectedOutput,
-          actualOutput,
-          expectedOutput,
-        });
-      });
-    } else {
-      compilex.compileJava(envData, code, (data) => {
-        const actualOutput = data
-          ? typeof data === "string"
-            ? data.trim()
-            : data.output?.trim() || ""
-          : "";
-        resolve({
-          passed: actualOutput === expectedOutput,
-          actualOutput,
-          expectedOutput,
-        });
-      });
-    }
-  });
-};
+    // Write the Java code to a temporary file
+    const fs = require("fs");
+    fs.writeFileSync("Main.java", code);
 
-const compileAndExecutePython = (code, input, expectedOutput) => {
-  return new Promise((resolve) => {
-    const envData = { OS: "windows" }; // or add support for Linux environments
-    if (input) {
-      console.log("Executing Python code with input:", code, input);
-      compilex.compilePythonWithInput(envData, code, input, (data) => {
-        console.log("Received data from compilePythonWithInput:", data);
-        const actualOutput =
-          typeof data === "string" ? data.trim() : data.output.trim();
+    // Compile the Java code
+    const { exec } = require("child_process");
+    exec("javac Main.java", (compileErr, compileStdout, compileStderr) => {
+      if (compileErr) {
         resolve({
-          passed: actualOutput === expectedOutput,
-          actualOutput,
+          passed: false,
+          actualOutput: "Compilation Error: " + compileErr,
           expectedOutput,
         });
-      });
-    } else {
-      console.log("Executing Python code without input:", code);
-      compilex.compilePython(envData, code, (data) => {
-        console.log("Received data from compilePython:", data);
-        const actualOutput =
-          typeof data === "string" ? data.trim() : data.output.trim();
-        resolve({
-          passed: actualOutput === expectedOutput,
-          actualOutput,
-          expectedOutput,
-        });
-      });
-    }
+      } else {
+        // Execute the compiled Java code
+        if (input) {
+          const process = exec("java Main", (execErr, stdout, stderr) => {
+            if (execErr) {
+              resolve({
+                passed: false,
+                actualOutput: "Execution Error: " + execErr,
+                expectedOutput,
+              });
+            } else {
+              const actualOutput = stdout.trim();
+              resolve({
+                passed: actualOutput === expectedOutput,
+                actualOutput,
+                expectedOutput,
+              });
+            }
+          });
+          process.stdin.write(input);
+          process.stdin.end();
+        } else {
+          const process = exec("java Main", (execErr, stdout, stderr) => {
+            if (execErr) {
+              resolve({
+                passed: false,
+                actualOutput: "Execution Error: " + execErr,
+                expectedOutput,
+              });
+            } else {
+              const actualOutput = stdout.trim();
+              resolve({
+                passed: actualOutput === expectedOutput,
+                actualOutput,
+                expectedOutput,
+              });
+            }
+          });
+        }
+      }
+    });
   });
 };
 
@@ -198,12 +195,10 @@ router.post("/execute", async (req, res) => {
   const executeCode = async (lang, code, input, expectedOutput) => {
     console.log("Executing code:", code, "for language:", lang);
     switch (lang) {
-      case "cpp":
-        return await compileAndExecuteCpp(code, input, expectedOutput);
       case "java":
-        return await compileAndExecuteJava(code, input, expectedOutput);
+        return await executeJava(code, input, expectedOutput);
       case "python":
-        return await compileAndExecutePython(code, input, expectedOutput);
+        return await executePython(code, input, expectedOutput);
       default:
         throw new Error(`Unsupported language: ${lang}`);
     }
@@ -242,12 +237,12 @@ router.post("/execute", async (req, res) => {
     console.log("All test cases executed. Results:", results);
     res.status(200).json({ results });
   } catch (error) {
-    console.error(`Error executing code: ${error}`);
+    console.error("Error executing code:", error);
     res.status(500).json({ error: "Internal Server Error" });
-  } finally {
-    compilex.flush(function () {});
   }
 });
+
+module.exports = router;
 
 router.get("/hello", async (req, res) => {
   res.status(200).json({ message: "Hi there!" });
