@@ -363,34 +363,6 @@ export default function Coding({
                 ))}
               </div>
             </div>
-            {/* <div className="output  bg-[#3a3a3a] rounded-lg border border-gray-300 py-3 mb-4 mx-3">
-              <h2 className="text-white text-lg font-bold ml-5 mb-2">
-                Output:
-              </h2>
-              <div id="outputResult" className="px-4 mt-3 bg-[#4a4a4a]">
-                {output.length > 0 ? (
-                  output.map((passed, index) => (
-                    <div key={index} className="flex items-center mb-2">
-                      <p className="text-white mr-2 mt-2">
-                        Testcase {index + 1}:
-                      </p>
-                      <p
-                        className={`text-lg font-bold ${
-                          passed ? "text-green-500" : "text-red-500"
-                        }`}
-                      >
-                        {passed ? "✔" : "❌"}
-                      </p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-white">
-                    Total test cases:{" "}
-                    {coding_questionList[questionIdx]?.testcases.length}
-                  </p>
-                )}
-              </div>
-            </div> */}
           </div>
         </div>
       </div>
