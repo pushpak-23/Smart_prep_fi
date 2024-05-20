@@ -129,6 +129,65 @@ const executePython = (code, input, expectedOutput) => {
   });
 };
 
+const executeCpp = (code, input, expectedOutput) => {
+  return new Promise((resolve) => {
+    // Write the C++ code to a temporary file
+    const fs = require("fs");
+    fs.writeFileSync("main.cpp", code);
+
+    // Compile the C++ code
+    const { exec } = require("child_process");
+    exec("g++ main.cpp -o main", (compileErr, compileStdout, compileStderr) => {
+      if (compileErr) {
+        resolve({
+          passed: false,
+          actualOutput: "Compilation Error: " + compileStderr,
+          expectedOutput,
+        });
+      } else {
+        // Execute the compiled C++ code
+        if (input) {
+          const process = exec("./main", (execErr, stdout, stderr) => {
+            if (execErr) {
+              resolve({
+                passed: false,
+                actualOutput: "Execution Error: " + stderr,
+                expectedOutput,
+              });
+            } else {
+              const actualOutput = stdout.trim();
+              resolve({
+                passed: actualOutput === expectedOutput,
+                actualOutput,
+                expectedOutput,
+              });
+            }
+          });
+          process.stdin.write(input);
+          process.stdin.end();
+        } else {
+          const process = exec("./main", (execErr, stdout, stderr) => {
+            if (execErr) {
+              resolve({
+                passed: false,
+                actualOutput: "Execution Error: " + stderr,
+                expectedOutput,
+              });
+            } else {
+              const actualOutput = stdout.trim();
+              resolve({
+                passed: actualOutput === expectedOutput,
+                actualOutput,
+                expectedOutput,
+              });
+            }
+          });
+        }
+      }
+    });
+  });
+};
+
 const executeJava = (code, input, expectedOutput) => {
   return new Promise((resolve) => {
     // Write the Java code to a temporary file
@@ -199,6 +258,8 @@ router.post("/execute", async (req, res) => {
         return await executeJava(code, input, expectedOutput);
       case "python":
         return await executePython(code, input, expectedOutput);
+      case "cpp":
+        return await executeCpp(code, input, expectedOutput);
       default:
         throw new Error(`Unsupported language: ${lang}`);
     }
