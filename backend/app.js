@@ -5,7 +5,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
 const testRoutes = require("./routes/testRoutes");
-const questionController = require("./controllers/questionController"); // assuming your controller file is named questionsController.js
+const questionController = require("./controllers/questionController");
+const studyController = require("./controllers/studyController");
 const cors = require("cors");
 
 const app = express();
@@ -31,6 +32,7 @@ mongoose
 app.use("/api/users", userRoutes);
 app.use("/api/questions", questionController); // use the questionsController for handling routes related to questions
 app.use("/api/test", testRoutes);
+app.use("/api/study", studyController);
 // Shutdown
 process.on("SIGINT", () => {
   mongoose.connection.close(() => {

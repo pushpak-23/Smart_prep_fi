@@ -44,74 +44,54 @@ function Main() {
         <div className="h-full w-full m-2 flex flex-wrap items-start justify-start rounded-tl grid-flow-col auto-cols-max gap-4 overflow-y-auto">
           <div className="w-full h-2 justify-center items-center align-middle flex-shrink-0 flex-grow"></div>
 
-          <div className="flex justify-center lg:justify-start gap-4 w-full">
-            <div
-              className="w-full sm:w-1/2 lg:w-1/4 h-36 p-4 rounded-lg flex items-center justify-center
-             border-t-2 border-b-2 border-purple-500 bg-whiteBg dark:bg-darkBg 
-             drop-shadow-lg hover:drop-shadow-xl"
-            >
+          <div className="flex flex-col lg:flex-row gap-4 w-full">
+            <div className="w-full lg:w-1/2 h-36 p-4 rounded-lg flex items-center justify-center border-t-2 border-b-2 border-purple-500 bg-whiteBg dark:bg-darkBg drop-shadow-lg hover:drop-shadow-xl">
               <div className="text-center">
                 <CheckSquare2 className="w-8 h-8 mx-auto mb-2  text-[#5df948] font-bold" />
-                <p className="text-2xl font-semibold dark:text-purple-300 text-purple-600 mt-1">
+                <p className="text-lg lg:text-2xl font-semibold dark:text-purple-300 text-purple-600 mt-1">
                   Test Taken
                 </p>
-                <p className="text-3xl font-bold dark:text-textW text-textB">
+                <p className="text-2xl lg:text-3xl font-bold dark:text-textW text-textB">
                   {userData.testsTaken}
                 </p>
               </div>
             </div>
-            <div
-              className="w-full sm:w-1/2 lg:w-1/4 h-36 p-4 rounded-lg flex items-center justify-center 
-             border-t-2 border-b-2 border-purple-500 bg-whiteBg dark:bg-darkBg
-              drop-shadow-lg hover:drop-shadow-xl "
-            >
+            <div className="w-full lg:w-1/2 h-36 p-4 rounded-lg flex items-center justify-center border-t-2 border-b-2 border-purple-500 bg-whiteBg dark:bg-darkBg drop-shadow-lg hover:drop-shadow-xl">
               <div className="text-center">
                 <Sigma className="w-8 h-8 mx-auto mt-2 text-[#00FFE7]" />
-                <p className="text-xl font-semibold dark:text-purple-300 text-purple-600">
+                <p className="text-lg lg:text-xl font-semibold dark:text-purple-300 text-purple-600">
                   Highest Aptitude Score
                 </p>
-                <p className="text-3xl font-bold dark:text-textW text-textB">
+                <p className="text-2xl lg:text-3xl font-bold dark:text-textW text-textB">
                   {userData.max_apti_marks}
                 </p>
               </div>
             </div>
-            <div
-              className="w-full sm:w-1/2 lg:w-1/4 h-36 p-4 rounded-lg flex items-center
-             justify-center  border-t-2 border-b-2 border-purple-500 bg-whiteBg dark:bg-darkBg
-              drop-shadow-lg hover:drop-shadow-xl"
-            >
+            <div className="w-full lg:w-1/2 h-36 p-4 rounded-lg flex items-center justify-center border-t-2 border-b-2 border-purple-500 bg-whiteBg dark:bg-darkBg drop-shadow-lg hover:drop-shadow-xl">
               <div className="text-center">
                 <Puzzle className="w-8 h-8 mx-auto mb-2 mt-2 dark:text-[#DCED31] text-[#f9f646]" />
-                <p className="text-xl font-semibold dark:text-purple-300 text-purple-600">
+                <p className="text-lg lg:text-xl font-semibold dark:text-purple-300 text-purple-600">
                   Highest Logical Score
                 </p>
-                <p className="text-3xl font-bold dark:text-textW text-textB">
+                <p className="text-2xl lg:text-3xl font-bold dark:text-textW text-textB">
                   {userData.max_logi_marks}
                 </p>
               </div>
             </div>
-            <div
-              className="w-full sm:w-1/2 lg:w-1/4 h-36 p-4 rounded-lg flex items-center
-             justify-center  border-t-2 border-b-2 border-purple-500 bg-whiteBg dark:bg-darkBg
-              drop-shadow-lg hover:drop-shadow-xl"
-            >
-              <div className="text-center  text-[#87CEEB]">
-                <Braces className="w-8 h-8 mx-auto  mt-2 text-cerise-600" />
-                <p className="text-xl font-semibold dark:text-purple-300 text-purple-600 ">
+            <div className="w-full lg:w-1/2 h-36 p-4 rounded-lg flex items-center justify-center border-t-2 border-b-2 border-purple-500 bg-whiteBg dark:bg-darkBg drop-shadow-lg hover:drop-shadow-xl">
+              <div className="text-center text-[#87CEEB]">
+                <Braces className="w-8 h-8 mx-auto mt-2 text-cerise-600" />
+                <p className="text-lg lg:text-xl font-semibold dark:text-purple-300 text-purple-600">
                   Highest Technical Score
                 </p>
-                <p className="text-3xl font-bold dark:text-textW text-textB ">
+                <p className="text-2xl lg:text-3xl font-bold dark:text-textW text-textB">
                   {userData.max_techni_marks}
                 </p>
               </div>
             </div>
           </div>
 
-          <div
-            className="w-[48%] h-80 rounded-lg flex-shrink-0 flex-grow border-t-2
-           border-b-2 border-purple-500 bg-whiteBg dark:bg-darkBg p-3 drop-shadow-lg
-            hover:drop-shadow-xl"
-          >
+          <div className="w-full lg:w-[48%] h-80 rounded-lg flex-shrink-0 flex-grow border-t-2 border-b-2 border-purple-500 bg-whiteBg dark:bg-darkBg p-3 drop-shadow-lg hover:drop-shadow-xl">
             <ResponsiveContainer>
               <BarChart
                 width={500}
@@ -147,11 +127,7 @@ function Main() {
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <div
-            className="w-[48%] h-80 rounded-lg flex-shrink-0 flex-grow border-t-2 
-          border-b-2 border-purple-500 bg-whiteBg dark:bg-darkBg p-3 drop-shadow-lg 
-          hover:drop-shadow-xl"
-          >
+          <div className="w-full lg:w-[48%] h-80 rounded-lg flex-shrink-0 flex-grow border-t-2 border-b-2 border-purple-500 bg-whiteBg dark:bg-darkBg p-3 drop-shadow-lg hover:drop-shadow-xl">
             <ResponsiveContainer>
               <LineChart
                 width={600}
