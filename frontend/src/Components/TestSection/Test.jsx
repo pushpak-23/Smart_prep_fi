@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import MCQuestions from "./MCQuestions";
 import "codemirror";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { showWarningToast } from "../../toast/toastNotifications";
 
 export default function Test() {
   const [allQuestions, setAllQuestions] = useState([]);
@@ -111,7 +114,9 @@ export default function Test() {
 
   const handleFullscreenChange = () => {
     if (!document.fullscreenElement) {
-      alert(`You exited fullscreen mode. You shouldn't have done that. `);
+      showWarningToast(
+        `You exited fullscreen mode. You shouldn't have done that. `
+      );
       navigate("/nuh-uh");
     }
   };
@@ -125,6 +130,7 @@ export default function Test() {
 
   return (
     <div>
+      <ToastContainer />
       <button onClick={handleEnterFullscreenClick}>Enter Fullscreen</button>
       <video ref={videoRef} autoPlay style={{ display: "none" }} />
       <MCQuestions
