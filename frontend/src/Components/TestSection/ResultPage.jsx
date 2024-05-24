@@ -6,7 +6,7 @@ import { setTestHistory, setUserData } from "../../state/reducer";
 
 const ResultPage = () => {
   const location = useLocation();
-  const { resultList = [], timeList = [] } = location.state ?? {};
+  const { resultList = [], timeList = [], imagesData = [] } = location.state ?? {};
   const aptitudeScore =
     resultList.length > 0 ? (resultList[0] * 100).toFixed(2) : 0;
   const logicalScore =
