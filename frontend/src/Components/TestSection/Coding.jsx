@@ -170,36 +170,44 @@ export default function Coding({
   };
 
   const stopRecording = () => {
-    // Pause the video
-    videoRef.current.pause();
+  // Pause the video
+  videoRef.current.pause();
 
-    // Stop the webcam capture
-    const stream = videoRef.current.srcObject;
-    const tracks = stream.getTracks();
-    tracks.forEach((track) => track.stop());
-    const imagesData = images.map((image) => image.canvas.toDataURL());
-    console.log(imagesData);
+  // Stop the webcam capture
+  const stream = videoRef.current.srcObject;
+  const tracks = stream.getTracks();
+  tracks.forEach((track) => track.stop());
 
-    // Clear the interval
-    clearInterval(intervalRef.current);
-  };
+  // Convert images to data URLs
+  const imagesData = images.map((image) => image.canvas.toDataURL());
+  console.log(imagesData);
 
-  const testSubmit = () => {
-    const totalTime = hours * 60 + minutes + seconds / 60;
-    const updatedResultList = [...resultList, res / coding_questionList.length];
-    const updatedTimeList = [...timeList, totalTime];
+  // Clear the interval
+  clearInterval(intervalRef.current);
 
-    console.log("resultList ", updatedResultList);
-    console.log("timeList ", updatedTimeList);
-    stopRecording();
+  // Return imagesData
+  return imagesData;
+};
 
-    const moveon = window.confirm("Submit Test?");
-    if (moveon) {
-      navigate("/result", {
-        state: { resultList: updatedResultList, timeList: updatedTimeList },
-      });
-    }
-  };
+const testSubmit = () => {
+  const totalTime = hours * 60 + minutes + seconds / 60;
+  const updatedResultList = [...resultList, res / coding_questionList.length];
+  const updatedTimeList = [...timeList, totalTime];
+
+  console.log("resultList ", updatedResultList);
+  console.log("timeList ", updatedTimeList);
+  
+  // Stop recording and get imagesData
+  const imagesData = stopRecording();
+
+  const moveon = window.confirm("Submit Test?");
+  if (moveon) {
+    navigate("/result", {
+      state: { resultList: updatedResultList, timeList: updatedTimeList, imagesData: imagesData },
+    });
+  }
+};
+
 
   return (
     <>
