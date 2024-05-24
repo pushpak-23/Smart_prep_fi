@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import Coding from "./Coding";
 import ThemeToggler from "../ThemeToggler";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import ConfirmationToast from "./ConfirmationToast";
 
 const MCQuestions = (props) => {
   const [allQuestions, setAllQuestions] = useState(props.questionList);
@@ -28,8 +25,9 @@ const MCQuestions = (props) => {
   const [hours, setHours] = useState(0);
   const [reviewedQuestions, setReviewedQuestions] = useState([]);
   const [answeredQuestions, setAnsweredQuestions] = useState([]);
-  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
-  const [isToastVisible, setIsToastVisible] = useState(false); // Flag to track toast visibility
+
+  console.log(allQuestions);
+  console.log(currentSection);
 
   const questionList = allQuestions.filter(
     (question) => question.type === currentSection
@@ -43,6 +41,8 @@ const MCQuestions = (props) => {
     const newSelectedList = [...selectedList];
     newSelectedList[questionIdx] = option;
     setSelectedList(newSelectedList);
+    console.log(newSelectedList);
+    console.log(questionList);
   };
 
   useEffect(() => {
@@ -79,38 +79,10 @@ const MCQuestions = (props) => {
   };
 
   const nextSection = () => {
-    if (!isToastVisible) {
-      // Check if toast is not already visible
-      setIsToastVisible(true); // Set flag to indicate toast visibility
-      toast.info(
-        <ConfirmationToast
-          onConfirm={confirmNextSection}
-          onClose={() => {
-            setIsCheckboxChecked(false);
-            setIsToastVisible(false); // Reset toast visibility flag on close
-            toast.dismiss();
-          }}
-          checked={isCheckboxChecked}
-          setChecked={setIsCheckboxChecked}
-        />,
-        {
-          autoClose: false,
-          closeOnClick: false,
-          draggable: false,
-          onClose: () => setIsToastVisible(false), // Reset toast visibility flag on close
-        }
-      );
-    }
-  };
-
-  const confirmNextSection = () => {
-    toast.dismiss();
-    setIsToastVisible(false); // Reset toast visibility flag
     const correctCount = correctOptions.filter((correctOption, index) => {
       const selectedOption = selectedList[index];
       return correctOption === selectedOption;
     }).length;
-    setIsCheckboxChecked(false);
 
     setResultList([...resultList, correctCount / questionList.length]);
     setTimeList([...timeList, hours * 60 + minutes + seconds / 60]);
@@ -161,7 +133,6 @@ const MCQuestions = (props) => {
   if (currentSection !== "coding") {
     return (
       <div className="flex flex-col min-h-screen dark:bg-darkBg2 bg-whiteBg2">
-        <ToastContainer />
         <div className="dark:bg-darkBg bg-whiteBg rounded-lg border-b-2 border-purple-500 py-3 mb-4 flex justify-between items-center">
           <div></div>
           <div className="bg-purple-500 rounded-md p-2 text-lg text-white cursor-no-drop">
@@ -284,6 +255,7 @@ const MCQuestions = (props) => {
             >
               Confirm Answer
             </button>
+
             <button
               className="rounded-full px-4 py-2 mb-0 bg-purple-400  border-2 border-purple-800  hover:bg-purple-700 dark:text-textW text-textB  transition-colors duration-300"
               onClick={nextQuestion}
