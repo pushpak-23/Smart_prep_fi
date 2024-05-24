@@ -25,14 +25,6 @@ export default function Test() {
         { input: "8 4", expectedOutput: "12" },
       ],
     },
-    {
-      type: "coding",
-      text: "Write a Java function to reverse a string",
-      testcases: [
-        { input: "hello", expectedOutput: "olleh" },
-        { input: "world", expectedOutput: "dlrow" },
-      ],
-    },
   ];
 
   useEffect(() => {
