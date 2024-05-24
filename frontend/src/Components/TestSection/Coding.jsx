@@ -9,6 +9,14 @@ import { okaidia } from "@uiw/codemirror-theme-okaidia";
 import { Dropdown } from "flowbite-react";
 import Timer from "../Timer";
 import ThemeToggler from "../ThemeToggler";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  showSuccessToast,
+  showErrorToast,
+  showWarningToast,
+} from "../../toast/toastNotifications";
+
 export default function Coding({
   coding_questionList,
   resultList,
@@ -99,7 +107,7 @@ export default function Coding({
       );
 
       if (!response.ok) {
-        alert("Code execution failed");
+        showWarningToast("Code execution failed");
       }
 
       const result = await response.json();
@@ -107,7 +115,7 @@ export default function Coding({
       setOutput(result.results.map((result) => result.passed));
     } catch (error) {
       console.error("Error during API request:", error);
-      alert("Code execution failed: " + error.message);
+      showWarningToast("Code execution failed: " + error.message);
     }
   };
 
@@ -160,7 +168,7 @@ export default function Coding({
       }
     } catch (error) {
       console.error("Error during API request:", error);
-      alert("Code execution failed: " + error.message);
+      showWarningToast("Code execution failed: " + error.message);
     }
 
     setSubmittedQuestions((prevSubmittedQuestions) => [
@@ -170,47 +178,51 @@ export default function Coding({
   };
 
   const stopRecording = () => {
-  // Pause the video
-  videoRef.current.pause();
+    // Pause the video
+    videoRef.current.pause();
 
-  // Stop the webcam capture
-  const stream = videoRef.current.srcObject;
-  const tracks = stream.getTracks();
-  tracks.forEach((track) => track.stop());
+    // Stop the webcam capture
+    const stream = videoRef.current.srcObject;
+    const tracks = stream.getTracks();
+    tracks.forEach((track) => track.stop());
 
-  // Convert images to data URLs
-  const imagesData = images.map((image) => image.canvas.toDataURL());
-  console.log(imagesData);
+    // Convert images to data URLs
+    const imagesData = images.map((image) => image.canvas.toDataURL());
+    console.log(imagesData);
 
-  // Clear the interval
-  clearInterval(intervalRef.current);
+    // Clear the interval
+    clearInterval(intervalRef.current);
 
-  // Return imagesData
-  return imagesData;
-};
+    // Return imagesData
+    return imagesData;
+  };
 
-const testSubmit = () => {
-  const totalTime = hours * 60 + minutes + seconds / 60;
-  const updatedResultList = [...resultList, res / coding_questionList.length];
-  const updatedTimeList = [...timeList, totalTime];
+  const testSubmit = () => {
+    const totalTime = hours * 60 + minutes + seconds / 60;
+    const updatedResultList = [...resultList, res / coding_questionList.length];
+    const updatedTimeList = [...timeList, totalTime];
 
-  console.log("resultList ", updatedResultList);
-  console.log("timeList ", updatedTimeList);
-  
-  // Stop recording and get imagesData
-  const imagesData = stopRecording();
+    console.log("resultList ", updatedResultList);
+    console.log("timeList ", updatedTimeList);
 
-  const moveon = window.confirm("Submit Test?");
-  if (moveon) {
-    navigate("/result", {
-      state: { resultList: updatedResultList, timeList: updatedTimeList, imagesData: imagesData },
-    });
-  }
-};
+    // Stop recording and get imagesData
+    const imagesData = stopRecording();
 
+    const moveon = window.confirm("Submit Test?");
+    if (moveon) {
+      navigate("/result", {
+        state: {
+          resultList: updatedResultList,
+          timeList: updatedTimeList,
+          imagesData: imagesData,
+        },
+      });
+    }
+  };
 
   return (
     <>
+      <ToastContainer />
       <div className="flex flex-col h-screen dark:bg-darkBg2 bg-whiteBg2">
         {/* Header */}
 

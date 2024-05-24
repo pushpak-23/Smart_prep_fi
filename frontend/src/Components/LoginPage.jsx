@@ -1,22 +1,19 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../Login.css";
 import { useNavigate } from "react-router-dom";
-// import { useUserContext } from "../UserContext";
 import { useDispatch, useSelector } from "react-redux";
 import { setTestHistory, setUserData } from "../state/reducer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  showSuccessToast,
+  showErrorToast,
+} from "../toast/toastNotifications.js";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const userData = useSelector((state) => state.userData);
-
-  useEffect(() => {
-    if (userData) {
-      navigate("/dashboard");
-    }
-  }, [userData, navigate]);
-
   const [loginAttr, setLoginAttr] = useState(true);
   const [name, setName] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
@@ -26,73 +23,86 @@ export default function LoginPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
 
+  useEffect(() => {
+    if (userData) {
+      navigate("/dashboard");
+    }
+  }, [userData, navigate]);
+
+  const validateFields = () => {
+    if (!email || !password) {
+      showErrorToast("Email and Password are required.");
+      return false;
+    }
+    if (!loginAttr && (!name || !number || !confirmPassword)) {
+      showErrorToast("All fields are required for sign up.");
+      return false;
+    }
+    if (!loginAttr && password !== confirmPassword) {
+      showErrorToast("Passwords do not match.");
+      return false;
+    }
+    return true;
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     console.log(email + "sent request");
+    if (!validateFields()) return;
     try {
       const response = await fetch("http://localhost:3001/api/users/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-          isAdmin,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, isAdmin }),
       });
       const data = await response.json();
       if (data.login) {
         dispatch(setUserData(data.user));
         dispatch(setTestHistory(data.tests));
-        console.log("Logged in:", data.user);
+        showSuccessToast("Logged in successfully!");
         navigate("/dashboard");
       } else {
-        alert("Login failed, Incorrect credentials");
+        showErrorToast("Login failed, Incorrect credentials");
       }
     } catch (error) {
-      setError("Login failed. Please try again.");
+      showErrorToast("Login failed. Please try again.");
     }
   };
+
   const handleAdminLogin = async (e) => {
     e.preventDefault();
+    if (!validateFields()) return;
     setIsAdmin(true);
     try {
       const response = await fetch(
         "http://localhost:3001/api/users/adminlogin",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            password,
-            isAdmin,
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password, isAdmin }),
         }
       );
       const data = await response.json();
       if (data.login) {
         dispatch(setUserData(data.user));
+        showSuccessToast("Admin logged in successfully!");
         navigate("/dashboard");
       } else {
-        alert(data.message);
+        showErrorToast(data.message);
       }
     } catch (error) {
-      setError("Login failed. Please try again.");
+      showErrorToast("Admin login failed. Please try again.");
     }
   };
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    if (!validateFields()) return;
     // Signup logic
     try {
       const response = await fetch("http://localhost:3001/api/users/register", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name,
           email,
@@ -102,10 +112,10 @@ export default function LoginPage() {
         }),
       });
       const data = await response.json();
-      alert("Signup successfully");
+      showSuccessToast("Signup successful!");
       toggleLoginSignup();
     } catch (error) {
-      setError("Signup failed. Please try again.");
+      showErrorToast("Signup failed. Please try again.");
     }
   };
 
@@ -121,6 +131,7 @@ export default function LoginPage() {
 
   return (
     <>
+      <ToastContainer />
       {loginAttr ? (
         <div className="loginBox border-2 border-purple-600 px-8 py-4">
           <img
