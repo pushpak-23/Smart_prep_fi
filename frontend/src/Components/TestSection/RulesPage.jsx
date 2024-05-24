@@ -1,11 +1,20 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const RulesPage = () => {
   const [isChecked, setIsChecked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const history = useHistory();
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
+  };
+
+  const handleStartTestClick = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      history.push("/test");
+    }, 8000); // 8000ms = 8 seconds
   };
 
   return (
@@ -83,16 +92,38 @@ const RulesPage = () => {
           </label>
         </div>
 
-        <div className=" justify-center ">
-          {/* Conditionally render the link to proceed to the test */}
+        <div className="justify-center">
           {isChecked && (
-            <Link
-              to="/test"
-              className="bg-green-500 hover:bg-green-700
-              text-white px-4 py-2 rounded w-full text-center"
+            <button
+              onClick={handleStartTestClick}
+              className="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded w-full text-center"
             >
-              Start Test
-            </Link>
+              {isLoading ? (
+                <div className="flex items-center justify-center">
+                  <svg
+                    className="animate-spin h-5 w-5 mr-3"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8H4z"
+                    ></path>
+                  </svg>
+                  Loading...
+                </div>
+              ) : (
+                "Start Test"
+              )}
+            </button>
           )}
         </div>
       </div>
