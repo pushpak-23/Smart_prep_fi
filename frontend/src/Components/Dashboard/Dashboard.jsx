@@ -25,7 +25,6 @@ function Dashboard() {
 
   const navigate = useNavigate();
   useEffect(() => {
-    console.log("userData changed:", userData);
     if (!userData) navigate("/login");
   }, [userData, navigate]);
 

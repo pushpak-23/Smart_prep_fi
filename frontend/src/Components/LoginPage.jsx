@@ -47,7 +47,6 @@ export default function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log(email + "sent request");
     if (!validateFields()) return;
     try {
       const response = await fetch("http://localhost:3001/api/users/login", {

@@ -26,9 +26,6 @@ const MCQuestions = (props) => {
   const [reviewedQuestions, setReviewedQuestions] = useState([]);
   const [answeredQuestions, setAnsweredQuestions] = useState([]);
 
-  console.log(allQuestions);
-  console.log(currentSection);
-
   const questionList = allQuestions.filter(
     (question) => question.type === currentSection
   );
@@ -41,8 +38,6 @@ const MCQuestions = (props) => {
     const newSelectedList = [...selectedList];
     newSelectedList[questionIdx] = option;
     setSelectedList(newSelectedList);
-    console.log(newSelectedList);
-    console.log(questionList);
   };
 
   useEffect(() => {
@@ -97,9 +92,6 @@ const MCQuestions = (props) => {
       setReviewedQuestions([]);
     } else if (currentSection === "logical") {
       setCurrentSection("coding");
-    } else {
-      alert(JSON.stringify(resultList));
-      alert(JSON.stringify(timeList));
     }
   };
 
@@ -109,7 +101,6 @@ const MCQuestions = (props) => {
 
   const markReview = (questionIndex) => {
     setReviewedQuestions([...reviewedQuestions, questionIndex]);
-    console.log("Reviewed Questions:", reviewedQuestions);
     nextQuestion();
   };
 
@@ -118,7 +109,6 @@ const MCQuestions = (props) => {
       (index) => index !== questionIndex
     );
     setReviewedQuestions(updatedReviewedQuestions);
-    console.log("Confirmed Answers:", selectedList[questionIndex]);
     nextQuestion();
   };
 
@@ -127,7 +117,6 @@ const MCQuestions = (props) => {
       (index) => index !== questionIndex
     );
     setReviewedQuestions(updatedReviewedQuestions);
-    console.log("Unmarked Review:", reviewedQuestions);
   };
 
   if (currentSection !== "coding") {

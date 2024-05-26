@@ -64,27 +64,15 @@ export default function Coding({
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    console.log("Updated resultList: ", resultList);
-  }, [resultList]);
-
-  useEffect(() => {
-    console.log("Updated timeList: ", timeList);
-  }, [timeList]);
-
   const nextQuestioncoding = () => {
     if (questionIdx < coding_questionList.length - 1) {
       setQuestionIdx((prevIdx) => prevIdx + 1);
-    } else {
-      console.log("Already on the last question.");
     }
   };
 
   const previousQuestionCoding = () => {
     if (questionIdx > 0) {
       setQuestionIdx((prevIdx) => prevIdx - 1);
-    } else {
-      console.log("Already on the first question.");
     }
   };
 
@@ -188,7 +176,6 @@ export default function Coding({
 
     // Convert images to data URLs
     const imagesData = images.map((image) => image.canvas.toDataURL());
-    console.log(imagesData);
 
     // Clear the interval
     clearInterval(intervalRef.current);
@@ -201,9 +188,6 @@ export default function Coding({
     const totalTime = hours * 60 + minutes + seconds / 60;
     const updatedResultList = [...resultList, res / coding_questionList.length];
     const updatedTimeList = [...timeList, totalTime];
-
-    console.log("resultList ", updatedResultList);
-    console.log("timeList ", updatedTimeList);
 
     // Stop recording and get imagesData
     const imagesData = stopRecording();

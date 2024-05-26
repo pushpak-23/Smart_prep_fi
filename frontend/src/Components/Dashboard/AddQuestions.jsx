@@ -50,7 +50,7 @@ const AddQuestionForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(questionData);
+
     try {
       const response = await fetch("http://localhost:3001/api/questions/add", {
         method: "POST",
@@ -59,8 +59,6 @@ const AddQuestionForm = () => {
         },
         body: JSON.stringify(questionData),
       });
-      const data = await response.json();
-      console.log("Data fetched:", data);
     } catch (error) {
       console.error("Error while fetching data:", error);
     }

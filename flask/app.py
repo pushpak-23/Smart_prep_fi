@@ -1,39 +1,20 @@
-import os
 from flask import Flask, request, jsonify
-import pandas as pd
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.preprocessing import StandardScaler
-from flask_cors import CORS # Import CORS class
 import numpy as np
 import cv2
 import base64
+import joblib  # Import joblib for loading models
+from flask_cors import CORS  # Import CORS class
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# Read the CSV file
-current_dir = os.path.dirname(__file__)
+# Load the trained model and scaler from the pickle files
+model = joblib.load('model.pkl')
+scaler = joblib.load('scaler.pkl')
 
-# Relative path to the CSV file
-csv_file_path = os.path.join(current_dir, 'placement_data_multiple_companies.csv')
-df = pd.read_csv(csv_file_path)
-# Separate features (X) and target variable (y)
-X = df.drop('Overall_Placement_Prob', axis=1)
-y = df['Overall_Placement_Prob']
-
-# Scale the input data
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
-
-# Train a Random Forest Regression model
-model = RandomForestRegressor(n_estimators=100)
-model.fit(X_scaled, y)
-
-def calculate_average_confidence():
+def calculate_average_confidence(data):
     try:
-        data = request.json
         images_data = data['images_data']
-
         confidence_scores = []
         for image_data in images_data:
             # Decode base64 image data
@@ -63,10 +44,9 @@ def calculate_average_confidence():
         else:
             average_confidence = 0
 
-        return jsonify({'average_confidence': average_confidence})
+        return {'average_confidence': average_confidence}
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
+        return {'error': str(e)}
 
 # Prediction route
 @app.route('/predict', methods=['POST'])
@@ -80,9 +60,6 @@ def predict():
         print("Extracted features:", features)
 
         # Convert the feature values to a list
-
-        confidenceData = calculate_average_confidence(data)
-
         feature_values = [
             data['Aptitude_Score'],
             data['Logical_Score'],
@@ -99,15 +76,21 @@ def predict():
         # Make prediction
         prediction = model.predict(scaled_features)[0]
         print("Prediction:", prediction)
-        return jsonify({'prediction': prediction})
+
+        # Calculate average confidence
+        confidence_result = calculate_average_confidence(data)
+        if 'error' in confidence_result:
+            return jsonify(confidence_result), 500
+
+        average_confidence = confidence_result['average_confidence']
+
+        return jsonify({'prediction': prediction, 'average_confidence': average_confidence})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
 
 @app.route('/hello', methods=['GET'])
 def hello():
     return jsonify({'message': 'hello'})
-
 
 if __name__ == '__main__':
     app.run(debug=True)

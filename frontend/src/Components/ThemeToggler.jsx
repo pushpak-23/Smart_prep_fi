@@ -7,7 +7,6 @@ export default function ThemeToggler() {
   const dispatch = useDispatch();
 
   const handleThemeChange = () => {
-    console.log("Theme changed: " + darkTheme);
     dispatch(setTheme(!darkTheme));
   };
 
