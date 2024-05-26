@@ -44,19 +44,63 @@ export default function Test() {
     };
     fetchData();
 
+    const requestFullscreen = () => {
+      const element = document.documentElement;
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if (element.mozRequestFullScreen) {
+        // Firefox
+        element.mozRequestFullScreen();
+      } else if (element.webkitRequestFullscreen) {
+        // Chrome, Safari and Opera
+        element.webkitRequestFullscreen();
+      } else if (element.msRequestFullscreen) {
+        // IE/Edge
+        element.msRequestFullscreen();
+      }
+    };
+
+    const handleCheating = () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+      navigate("/cheat-detected");
+    };
+
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        handleCheating();
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        handleCheating();
+      }
+    };
+
+    const handleBlur = () => {
+      handleCheating();
+    };
+
     // Request to enter fullscreen mode initially
     requestFullscreen();
 
     document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("blur", handleBlur);
 
     // Set a timeout to navigate user to a different page if they don't switch to fullscreen within 10 seconds
     const timeout = setTimeout(() => {
       if (!document.fullscreenElement) {
+        navigate("/fullscreen-required");
       }
     }, 10000);
 
     return () => {
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("blur", handleBlur);
       clearTimeout(timeout);
     };
   }, [navigate]);
