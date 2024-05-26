@@ -4,6 +4,9 @@ import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import StandardScaler
 from flask_cors import CORS # Import CORS class
+import numpy as np
+import cv2
+import base64
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -26,6 +29,44 @@ X_scaled = scaler.fit_transform(X)
 model = RandomForestRegressor(n_estimators=100)
 model.fit(X_scaled, y)
 
+def calculate_average_confidence():
+    try:
+        data = request.json
+        images_data = data['images_data']
+
+        confidence_scores = []
+        for image_data in images_data:
+            # Decode base64 image data
+            nparr = np.frombuffer(base64.b64decode(image_data.split(',')[1]), np.uint8)
+            frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+            # Convert frame to grayscale
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+            face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
+            # Detect faces
+            faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+
+            # Print information about detected faces
+            print("Number of faces detected:", len(faces))
+            for i, (x, y, w, h) in enumerate(faces, 1):
+                print(f"Face {i}: x={x}, y={y}, width={w}, height={h}")
+
+                # Calculate confidence score for each detected face
+                confidence_score = w * h / (frame.shape[0] * frame.shape[1])
+                confidence_scores.append(confidence_score)
+
+        # Calculate average confidence score
+        if confidence_scores:
+            average_confidence = np.mean(confidence_scores)
+        else:
+            average_confidence = 0
+
+        return jsonify({'average_confidence': average_confidence})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 # Prediction route
 @app.route('/predict', methods=['POST'])
@@ -39,8 +80,17 @@ def predict():
         print("Extracted features:", features)
 
         # Convert the feature values to a list
-        feature_values = [features[key] for key in features]
-        print("Feature values:", feature_values)
+
+        confidenceData = calculate_average_confidence(data)
+
+        feature_values = [
+            data['Aptitude_Score'],
+            data['Logical_Score'],
+            data['Technical_Score'],
+            data['Aptitude_Time'],
+            data['Logical_Time'],
+            data['Technical_Time'],
+        ]
 
         # Scale the features
         scaled_features = scaler.transform([feature_values])
