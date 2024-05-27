@@ -22,7 +22,6 @@ export default function AdminMain() {
         );
 
         const data = await response.json();
-        console.log(data);
         setRecentTests(data.tests);
         setStudentCount(data.studentCount);
         setTestCount(data.testCount);

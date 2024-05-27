@@ -102,7 +102,6 @@ const ResultPage = () => {
       { company: "Infosys", percent: infosysCriteria * 100 },
       { company: "Wipro", percent: wiproCriteria * 100 },
     ];
-    console.log(calculatedScores);
     setCompanyScores(calculatedScores);
     setShowTable(true);
   };
@@ -116,7 +115,6 @@ const ResultPage = () => {
   const dispatch = useDispatch();
 
   const handlePredictions = () => {
-    console.log("handle Predictions");
     setShowTable(true);
     // Send scores and time to an API
     fetch("http://127.0.0.1:5000/predict", {
@@ -146,10 +144,7 @@ const ResultPage = () => {
   };
   const userData = useSelector((state) => state.userData);
   const addToDatabase = () => {
-    console.log("addToDatabase");
-
     const email = userData.email;
-    console.log(email);
     // Send scores and time to an API
     fetch("http://localhost:3001/api/test/addTest", {
       method: "POST",
@@ -168,7 +163,6 @@ const ResultPage = () => {
         // Store response in companyPredictions state
         dispatch(setUserData(data.user));
         dispatch(setTestHistory(data.tests));
-        console.log(userData);
       })
       .catch((error) => {
         console.error("Error fetching company predictions:", error);

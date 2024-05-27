@@ -19,8 +19,6 @@ function Main() {
   const userData = useSelector((state) => state.userData);
   const testHistory = useSelector((state) => state.testHistory);
 
-  console.log(testHistory);
-
   // Function to transform testHistory data into a format suitable for the charts
   const transformDataForCharts = () => {
     if (!testHistory || !testHistory) return []; // Return empty array if no test history
