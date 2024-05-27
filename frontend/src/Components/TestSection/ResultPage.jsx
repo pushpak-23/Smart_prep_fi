@@ -6,16 +6,28 @@ import { setTestHistory, setUserData } from "../../state/reducer";
 
 const ResultPage = () => {
   const location = useLocation();
-  const { resultList = [], timeList = [], imagesData = [] } = location.state ?? {};
-  const aptitudeScore =
-    resultList.length > 0 ? (resultList[0] * 100).toFixed(2) : 0;
-  const logicalScore =
-    resultList.length > 1 ? (resultList[1] * 100).toFixed(2) : 0;
-  const technicalScore =
-    resultList.length > 2 ? (resultList[2] * 100).toFixed(2) : 0;
-  const aptitudeTime = timeList.length > 0 ? timeList[0].toFixed(2) : 0;
-  const logicalTime = timeList.length > 1 ? timeList[1].toFixed(2) : 0;
-  const technicalTime = timeList.length > 2 ? timeList[2].toFixed(2) : 0;
+  const {
+    resultList = [],
+    timeList = [],
+    imagesData = [],
+  } = location.state ?? {};
+  // const aptitudeScore =
+  //   resultList.length > 0 ? (resultList[0] * 100).toFixed(2) : 0;
+  // const logicalScore =
+  //   resultList.length > 1 ? (resultList[1] * 100).toFixed(2) : 0;
+  // const technicalScore =
+  //   resultList.length > 2 ? (resultList[2] * 100).toFixed(2) : 0;
+  // const aptitudeTime = timeList.length > 0 ? timeList[0].toFixed(2) : 0;
+  // const logicalTime = timeList.length > 1 ? timeList[1].toFixed(2) : 0;
+  // const technicalTime = timeList.length > 2 ? timeList[2].toFixed(2) : 0;
+
+  const aptitudeScore = 66.7;
+  const logicalScore = 58.3;
+  const technicalScore = 50;
+  const technicalTime = 20;
+  const aptitudeTime = 15;
+  const logicalTime = 20;
+
   const navigate = useNavigate();
 
   const [companyPredictions, setCompanyPredictions] = useState("");

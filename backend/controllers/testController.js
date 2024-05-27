@@ -60,10 +60,13 @@ exports.adminKnowledge = async (req, res) => {
 
     const testCount = await testHistory.countDocuments();
 
+    const admins = await User.countDocuments({ isAdmin: true });
+
     res.status(200).json({
       tests: tests,
       test_returned: true,
       studentCount: students,
+      adminCount: admins,
       testCount,
     });
   } catch (err) {

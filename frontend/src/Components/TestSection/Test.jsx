@@ -64,7 +64,7 @@ export default function Test() {
       if (document.fullscreenElement) {
         document.exitFullscreen();
       }
-      navigate("/cheat-detected");
+      navigate("/nuh-uh");
     };
 
     const handleFullscreenChange = () => {
@@ -93,7 +93,7 @@ export default function Test() {
     // Set a timeout to navigate user to a different page if they don't switch to fullscreen within 10 seconds
     const timeout = setTimeout(() => {
       if (!document.fullscreenElement) {
-        navigate("/fullscreen-required");
+        navigate("/nuh-uh");
       }
     }, 10000);
 
@@ -153,15 +153,6 @@ export default function Test() {
       element.webkitRequestFullscreen();
     } else if (element.msRequestFullscreen) {
       element.msRequestFullscreen();
-    }
-  };
-
-  const handleFullscreenChange = () => {
-    if (!document.fullscreenElement) {
-      showWarningToast(
-        `You exited fullscreen mode. You shouldn't have done that. `
-      );
-      navigate("/nuh-uh");
     }
   };
 

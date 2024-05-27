@@ -75,7 +75,7 @@ const StudyMaterial = () => {
               </p>
             </div>
             {userData.isAdmin && (
-              <div className="flex justify-center align-middle mt-3">
+              <div className=" mt-3 ">
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
