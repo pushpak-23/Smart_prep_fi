@@ -68,7 +68,7 @@ const StudyMaterial = () => {
       <div className="w-full flex flex-col scrollbar">
         <Header />
         <main className="max-w-full h-full flex relative overflow-y-auto scrollbar-none">
-          <div className="h-full w-full m-4 flex flex-wrap items-start justify-start rounded-tl grid-flow-col auto-cols-max gap-4 overflow-y-auto">
+          <div className="h-full w-full m-4 flex flex-wrap items-center justify-center rounded-tl grid-flow-col auto-cols-max gap-4 overflow-y-auto">
             <div className="w-full h-2 justify-center items-center align-middle flex-shrink-0 flex-grow">
               <p className="flex text-fuchsia-500 justify-center align-middle font-bold text-2xl">
                 STUDY MATERIAL
@@ -87,18 +87,18 @@ const StudyMaterial = () => {
                     value={newText}
                     onChange={(e) => setNewText(e.target.value)}
                     placeholder="Enter text"
-                    className="p-2 mr-2 border border-gray-300 rounded-md focus:outline-none focus:border-fuchsia-500"
+                    className="p-2 mr-2 border-2 dark:bg-darkBg2  dark:text-textW border-purple-500 rounded-md focus:outline-none focus:border-fuchsia-500"
                   />
                   <input
                     type="text"
                     value={newUrl}
                     onChange={(e) => setNewUrl(e.target.value)}
                     placeholder="Enter URL"
-                    className="p-2 mr-2 border border-gray-300 rounded-md focus:outline-none focus:border-fuchsia-500"
+                    className="p-2 mr-2 border-2 dark:bg-darkBg2  dark:text-textW border-purple-500 rounded-md focus:outline-none focus:border-fuchsia-500"
                   />
                   <button
                     type="submit"
-                    className="bg-fuchsia-500 text-white p-2 rounded-md hover:fuchsia-500 focus:outline-none focus:bg-fuchsia-300"
+                    className="bg-purple-500 border-2 border-purple-800 hover:scale-105 text-white p-2 rounded-md hover:bg-purple-700 focus:outline-none"
                   >
                     Add Study Material
                   </button>

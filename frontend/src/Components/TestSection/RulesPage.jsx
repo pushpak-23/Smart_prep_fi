@@ -61,26 +61,29 @@ const RulesPage = () => {
             </li>
           </ul>
         </div>
-
-        <div className="flex items-center mb-4">
-          <input
-            type="checkbox"
-            className="form-checkbox mr-2"
-            id="readEverything"
-            checked={isChecked}
-            onChange={handleCheckboxChange}
-          />
-          <label htmlFor="readEverything">Ya Ya, I've Got It</label>
+        <div className="flex flex-col items-center">
+          <div className="flex items-center mb-4">
+            <input
+              type="checkbox"
+              className="form-checkbox mr-2"
+              id="readEverything"
+              checked={isChecked}
+              onChange={handleCheckboxChange}
+            />
+            <label htmlFor="readEverything">
+              I have read and understood the instructions
+            </label>
+          </div>
+          {/* Conditionally render the link to proceed to the test */}
+          {isChecked && (
+            <Link
+              to="/test"
+              className="bg-gradient-to-r from-purple-400 via-blue-400 to-pink-400 hover:from-purple-500 hover:via-blue-500 hover:to-pink-500 text-white px-4 py-2 rounded"
+            >
+              Proceed to Test
+            </Link>
+          )}
         </div>
-        {/* Conditionally render the link to proceed to the test */}
-        {isChecked && (
-          <Link
-            to="/test"
-            className="bg-gradient-to-r from-purple-400 via-blue-400 to-pink-400 hover:from-purple-500 hover:via-blue-500 hover:to-pink-500 text-white px-4 py-2 rounded w-full"
-          >
-            Proceed to Test
-          </Link>
-        )}
       </div>
     </div>
   );
